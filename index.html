@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <title>Conways Game of Life - byWulf</title>
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="64x64">
+
+        <!--Externe Libraries-->
+        <script src="externalLibs/js/jquery-1.12.0.min.js"></script>
+
+        <link rel="stylesheet" href="externalLibs/css/bootstrap.min.css">
+        <script src="externalLibs/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="externalLibs/css/bootstrap-slider.min.css">
+        <script src="externalLibs/js/bootstrap-slider.min.js"></script>
+
+
+        <!--Projektdateien-->
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="src/world.js"></script>
+        <script src="src/cell.js"></script>
+        <script src="src/ruleset.js"></script>
+        <script src="src/startform.js"></script>
+
+        <script src="startForms/random.js"></script>
+        <script src="startForms/blank.js"></script>
+        <script src="startForms/staticObjects233.js"></script>
+        <script src="startForms/oscilatingObjects233.js"></script>
+        <script src="startForms/gleiterObjects233.js"></script>
+        <script src="startForms/seglerObjects233.js"></script>
+        <script src="startForms/gettingBlank233.js"></script>
+        <script src="startForms/fPentomino233.js"></script>
+        <script src="startForms/fourtyTwo233.js"></script>
+        <script src="startForms/oscilatingObjects23.js"></script>
+        <script src="startForms/oscilatingObjects33.js"></script>
+        <script src="startForms/oscilatingObjects133.js"></script>
+        <script src="startForms/oscilatingObjects243.js"></script>
+        <script src="startForms/oscilatingObjects343.js"></script>
+        <script src="startForms/oscilatingObjects2453.js"></script>
+        <script src="startForms/oscilatingObjects12536.js"></script>
+        <script src="startForms/qualleObject2453.js"></script>
+        <script src="startForms/schwimmerObjects353.js"></script>
+        <script src="startForms/seglerObject353.js"></script>
+        <script src="startForms/staticObjects33.js"></script>
+        <script src="startForms/staticObjects243.js"></script>
+        <script src="startForms/pacman13571357.js"></script>
+
+        <script src="src/app.js"></script>
+    </head>
+    <body>
+        <!--Container, welcher die Zellen der Welt beinhaltet-->
+        <div id="container"></div>
+
+        <!--Settings, um die Welt konfigurieren zu können-->
+        <div id="settings">
+            <h3>Einstellungen</h3>
+            <form class="form-horizontal">
+                <div class="form-group"  data-toggle="popover" title="Startform" data-content="<p>Hier können beispielhafte Startformen ausgewählt werden. Diese symbolisieren besondere Verhaltensweisen der verschiedenen Regelwelten. Übernommen wurden sie dabei von Wikipedia.</p><p>Es können auch eigene Startformen generiert werden, indem mit der Maus Zellen angeklickt und so belebt oder getötet werden.</p>">
+                    <label for="startForm" class="col-sm-4 control-label">Startgeneration</label>
+                    <div class="col-sm-8">
+                        <select id="startForm" class="form-control">
+                            <optgroup label="Standard">
+                                <option value="Blank">Leer (zum Selbstklicken)</option>
+                                <option value="Random">Zufall</option>
+                            </optgroup>
+                            <optgroup label="Für 23/3" data-rules="23/3">
+                                <option value="StaticObjects233">Statische Objekte</option>
+                                <option value="OscilatingObjects233">Oszilierende Objekte</option>
+                                <option value="GleiterObjects233">Gleiter</option>
+                                <option value="SeglerObjects233">Segler</option>
+                                <option value="GettingBlank233">Aussterbende Welt</option>
+                                <option value="FPentomino233">f-Pentomino</option>
+                                <option value="FourtyTwo233">42</option>
+                            </optgroup>
+                            <optgroup label="Für 3/3" data-rules="3/3">
+                                <option value="StaticObjects33">Statische Objekte</option>
+                                <option value="OscilatingObjects33">Oszilierende Objekte</option>
+                            </optgroup>
+                            <optgroup label="Für 13/3" data-rules="13/3">
+                                <option value="OscilatingObjects133">Oszilierende Objekte</option>
+                            </optgroup>
+                            <optgroup label="Für 34/3" data-rules="34/3">
+                                <option value="OscilatingObjects343">Oszilierende Objekte</option>
+                            </optgroup>
+                            <optgroup label="Für 35/3" data-rules="35/3">
+                                <option value="SchwimmerObjects353">Schwimmer</option>
+                                <option value="SeglerObject353">Segler</option>
+                            </optgroup>
+                            <optgroup label="Für 2/3" data-rules="2/3">
+                                <option value="OscilatingObjects23">Oszilierende Objekte</option>
+                            </optgroup>
+                            <optgroup label="Für 24/3" data-rules="24/3">
+                                <option value="StaticObjects243">Statische Objekte</option>
+                                <option value="OscilatingObjects243">Oszilierende Objekte</option>
+                            </optgroup>
+                            <optgroup label="Für 245/3" data-rules="245/3">
+                                <option value="OscilatingObjects2453">Oszilierende Objekte</option>
+                                <option value="QualleObject2453">Qualle</option>
+                            </optgroup>
+                            <optgroup label="Für 125/36" data-rules="125/36">
+                                <option value="OscilatingObjects12536">Oszilierende Objekte</option>
+                            </optgroup>
+                            <optgroup label="Für 1357/1357" data-rules="1357/1357">
+                                <option value="Pacman13571357">Pacman</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" data-toggle="popover" title="Regeln" data-content="<p>Regeln werden im Format &quot;23/3&quot; angegeben.</p><p>Im <b>linken Block</b> werden dabei die möglichen Anzahlen an lebenden Nachbarn angegeben, bei denen eine lebende Zelle <b>am Leben bleibt</b>.</p><p>Im <b>rechten Block</b> werden die möglichen Anzahlen an lebenden Nachbarn angegeben, bei denen eine lebende Zelle <b>stirbt</b>.</p><p>Beispiele für Regeln:<dl class=&quot;dl-horizontal&quot;><dt>23/3</dt><dd>Conways Original</dd><dt>236/3</dt><dd>explodierend</dd><dt>12345/3</dt><dd>bildet labyrinthartige Strukturen</dd><dt>1357/1357</dt><dd>Kopiert einfache Formen</dd><dt>0123/01234</dt><dd>blinkende Fleckenwelt</dd></dl></p>">
+                    <label for="rules" class="col-sm-4 control-label">Regeln</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="rules" placeholder="Regeln" value="23/3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rules" class="col-sm-4 control-label"></label>
+                    <div class="col-sm-6 padding-right--min">
+                        <button id="submitSettingsButton" class="btn btn-primary btn-block">Ok</button>
+                    </div>
+                    <div class="col-sm-2 padding-left--min">
+                        <button type="button" class="infoButton btn btn-default btn-block" data-toggle="modal" data-target="#infoModal"><span class="glyphicon glyphicon-question-sign"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--Controls, um die Entwicklung der Welt steuern zu können-->
+        <div id="controls" style="display: none;">
+            <h3>Generation #<span id="generationCounter">0</span></h3>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button id="stepButton" class="oneStep btn btn-default btn-block">Nächste Generation</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="speed" class="col-sm-4 control-label">Geschwindigkeit</label>
+                    <div class="col-sm-8">
+                        <input id="speed" data-slider-id='speedSlider' type="text" data-slider-min="20" data-slider-max="2000" data-slider-step="1" data-slider-value="200"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button id="playButton" class="play btn btn-success btn-block">Starten</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button id="pauseButton" class="pause btn btn-warning btn-block disabled" disabled="disabled">Pause</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-10 padding-right--min">
+                        <button id="stopButton" class="stop btn btn-danger btn-block">Abbrechen</button>
+                    </div>
+                    <div class="col-sm-2 padding-left--min">
+                        <button type="button" class="infoButton btn btn-default btn-block" data-toggle="modal" data-target="#infoModal"><span class="glyphicon glyphicon-question-sign"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--byWulf Logo-->
+        <img src="img/bywulf_logo.png" alt="byWulf" id="bywulfLogo">
+
+        <!--Hilfe für die Benutzer-->
+        <div id="infoModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Hilfe zu Conways Game of Life - byWulf</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Über Conways Game of Life</h4>
+                        <p>
+                            Das Spiel des Lebens (engl. Conway's Game of Life) ist ein vom Mathematiker John Horton Conway
+                            1970 entworfenes System, basierend auf einem zweidimensionalen zellulären Automaten. Es ist eine
+                            einfache und bis heute populäre Umsetzung der Automaten-Theorie von Stanisław Marcin Ulam.
+                            <a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens" target="_blank">[1]</a>
+                        </p>
+                        <p>
+                            Das Spielfeld ist in Zeilen und Spalten unterteilt und unendlich groß. Jedes Gitterquadrat ist
+                            ein zellulärer Automat (Zelle), der einen von zwei Zuständen einnehmen kann, welche oft als
+                            lebendig und tot bezeichnet werden. Zunächst wird eine Anfangsgeneration von lebenden Zellen auf
+                            dem Spielfeld platziert. Jede lebende oder tote Zelle hat auf diesem Spielfeld genau acht
+                            Nachbarzellen, die berücksichtigt werden (Moore-Nachbarschaft). Die nächste Generation ergibt
+                            sich durch die Befolgung einfacher Regeln.
+                            <a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Das_Spielfeld" target="_blank">[2]</a>
+                        </p>
+                        <p>
+                            Die Folgegeneration wird für alle Zellen gleichzeitig berechnet und ersetzt die aktuelle
+                            Generation. Der Zustand einer Zelle, lebendig oder tot, in der Folgegeneration hängt nur vom
+                            Zustand der acht Nachbarzellen dieser Zelle in der aktuellen Generation ab.
+                            <a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Die_Spielregeln" target="_blank">[3]</a>
+                        </p>
+                        <p>
+                            Die nächste Generation an lebenden Zellen (also der Status aller Zellen in der nächsten
+                            Spielrunde) wird durch ein einfaches Regelset berechnet:
+                            <a href="https://www.it-talents.de/cms/aktionen/code-competition/aktuelle-code-competition" target="_blank">[4]</a>
+                        </p>
+                        <ol>
+                            <li>Jede lebende Zelle, die weniger als 2 lebende Nachbarzellen hat, stirbt</li>
+                            <li>Jede lebende Zelle, die 2 oder 3 lebendige Nachbarzellen hat, lebt weiter</li>
+                            <li>Jede lebende Zelle, die mehr als 3 lebende Nachbarzellen hat, stirbt</li>
+                            <li>Jede tote Zelle, die genau 3 lebende Nachbarzellen hat, wird lebendig</li>
+                        </ol>
+                        <p>
+                            Mit diesen vier einfachen Regeln entsteht aus bestimmten Anfangsmustern im Laufe des Spiels eine
+                            Vielfalt komplexer Strukturen. Einige bleiben unverändert, andere oszillieren und wieder andere
+                            wachsen oder vergehen. Manche Strukturen, sogenannte Gleiter, bewegen sich auf dem Spielfeld
+                            fort. Sogar für logische Funktionen wie UND und ODER lassen sich Anfangsmuster finden. Damit
+                            können dann sogar komplexe Funktionen der Schaltungslogik und digitalen Rechnertechnik
+                            nachgebaut werden.
+                            <a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Die_Spielregeln" target="_blank">[3]</a>
+                        </p>
+                        <h4>Bedienung</h4>
+                        <p>
+                            Zunächst muss einmal die Startgeneration festgelegt werden, welche sich entwickeln soll. Dazu
+                            sind bereits schon einige besondere Startformen in diesem Programm hinterlegt, aus denen
+                            ausgewählt werden kann. Mache sind allgemeingültig, andere sind nur für spezielle Regeln
+                            vorgesehen. Durch Auswahl einer Startform aus der Selectbox "Startgeneration" wird diese
+                            automatisch geladen und dargestellt.<br>
+                            Möchte man eine eigene Startgeneration festlegen, so kann man einfach Zellen anklicken und so
+                            den Zustand zwischen tot und lebend umschalten.
+                        </p>
+                        <p>
+                            Als nächstes kann noch ein abweichendes Regelwerk festgelegt werden. Standardmäßig wird das von
+                            Conway festgelegte und auch oben beschriebene Regelwerk "23/3" verwendet, kann jedoch durch die
+                            Eingabe eines Regelbezeichnung in nachfolgender Form umgeändert werden. Verschiedene Regelwerke
+                            haben auch verschiedene Verhaltensweisen der Zellen zur Folge. So kann z.B. mit dem Regelwerk
+                            "1357/1357" eine Kopierwelt erstellen, welche ein einfaches Muster in 16 Generationen
+                            vervielfältigt.<br>
+                            Ein Regelwerk wird im Format "23/3" angegeben. Die links vom Slash stehenden Zahlen geben dabei
+                            die nötige Anzahl an lebenden Nachbarzellen an, bei denen eine lebende Zelle in der nächsten
+                            Generation am leben bleibt. Die rechts vom Slash stehenden Zahlen geben die nötige Anzahl an
+                            lebenden Nachbarzellen an, damit eine tote Zelle in der nächsten Generation wiederbelebt wird.
+                        </p>
+                        <p>
+                            Nachdem nun die Startgeneration und das Regelwerk festgelegt wurde, kann man auf "Ok" klicken,
+                            um sie zu übernehmen und die Steuermöglichkeit zum Starten der Lebenszyklen anzuzeigen.
+                        </p>
+                        <p>
+                            Hier hat man nun die Möglichkeit, entweder manuell die nächste Generation zu erzeugen und
+                            darzustellen (Button "Nächste Generation") oder die Generationen automatisch zu generieren.
+                            Dabei kann zunächst die Geschwindigkeit, in der die Generationen erstellt werden, angepasst
+                            werden (Schieberegler "Geschwindigkeit"). Anschließend kann mit Klick auf "Starten" das
+                            automatische Generieren gestartet und mit Klick auf "Pause" wieder unterbrochen werden.
+                        </p>
+                        <p>
+                            Mit einem Klick auf "Abbrechen" kommt man wieder zurück zu den Einstellungen, in denen man eine
+                            neue Startsituation festlegen kann.
+                        </p>
+                        <h4>Über den Programmierer</h4>
+                        <img src="img/bywulf_author.jpg" alt="" class="pull-left padding-right--min padding-bottom--min">
+                        <p>
+                            Ich heiße Michael Wolf, bin 26 Jahre alt und leidenschaftlicher Programmierer. Bereits mit 10
+                            Jahren habe ich erste Programmiererfahrung in verschiedenen Basic-Dialekten gesammelt und so mit
+                            den Jahren Einblick in viele unterschiedliche Programmiersprachen sammeln können. Nach einem
+                            abgebrochenen Informatik-Studium und anschließend erfolgreich abgeschlossener
+                            Fachinformatiker-Ausbildung arbeite ich nun bei einem großen Ferienhausvermittler in
+                            Festanstellung. Aber auch privat programmiere ich weiterhin aktiv und habe gerade an solchen
+                            Competitions viel Spaß, da man auch nach 16 Jahren immernoch neues lernt.
+                        </p>
+                        <p>
+                            Ihr möchtet mich kontaktieren? Unter der Emailadresse
+                            <a href="mailto:wulf1337@gmail.com" target="_blank">wulf1337@gmail.com</a> könnt ihr mich
+                            jederzeit anschreiben.
+                        </p>
+                        <h4>Teilnahme an der IT-Talents Code Competition</h4>
+                        <p>
+                            Mit dem hier entwickelten Projekt nehme ich an der Code Competition "Conways Game of Life" teil,
+                            welche im Januar 2016 bei IT-Talents veranstaltet wurde.
+                        </p>
+                        <p>
+                            IT-Talents veranstaltet regelmäßig sogenannte Code Competitions. Dabei handelt es sich um einen
+                            Programmierwettbewerb, bei dem man mit seinen Coding-Skills punkten kannst. Sie veröffentlichen
+                            auf unserer Webseite eine Aufgabe oder Problemstellung, die man mit seinen
+                            Programmierfähigkeiten lösen sollst.
+                            <a href="https://www.it-talents.de/cms/aktionen/code-competition/code-competitions" target="_blank">[5]</a>
+                        </p>
+                        <h4>Weiterführende Informationen</h4>
+                        <ul>
+                            <li><a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens" target="_blank">Wikipedia-Artikel zu Conways Game of Life</a></li>
+                            <li><a href="https://www.it-talents.de/cms/aktionen/code-competition/code-competitions" target="_blank">IT-Talents Code Competitions</a></li>
+                            <li><a href="https://jquery.com/" target="_blank">Verwendetes Javascript-Framework "jQuery"</a></li>
+                            <li><a href="http://getbootstrap.com/" target="_blank">Verwendetes Frontend-Framework "Bootstrap"</a></li>
+                            <li><a href="https://github.com/seiyria/bootstrap-slider" target="_blank">Slider-Plugin "bootstrap-slider"</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--App starten-->
+        <script>
+            var app = new App();
+        </script>
+    </body>
+</html>

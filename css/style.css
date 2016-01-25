@@ -1,0 +1,64 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+#container {
+    position: relative;
+}
+
+.cell {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid #fff;
+
+    background-color: #eee;
+}
+.cell.alive {
+    background-color: #333;
+}
+
+/* Settings */
+#settings, #controls {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background: #eee;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+#settings h3, #controls h3 {
+    margin-top: 0;
+}
+#settings dl.dl-horizontal dt {
+    width: 80px;
+}
+#settings dl.dl-horizontal dd {
+    margin-left: 100px;
+}
+.slider-handle, .slider-selection {
+    box-shadow: none;
+    background-image: none;
+    filter: none;
+}
+.infoButton {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+.padding-right--min {
+    padding-right: 10px;
+}
+.padding-left--min {
+    padding-left: 10px;
+}
+.padding-bottom--min {
+    padding-bottom: 10px;
+}
+form.form-horizontal .form-group:last-child {
+    margin-bottom: 0;
+}
+#bywulfLogo {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
